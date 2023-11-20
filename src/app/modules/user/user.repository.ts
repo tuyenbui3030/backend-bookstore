@@ -9,14 +9,14 @@ export class UserRepository extends Repository<User> {
   }
 
   /**
-   * find user by email
-   * @param email
+   * find user by username
+   * @param username
    * @returns
    */
-  async findByEmail(email: string): Promise<User> {
+  async findByusername(username: string): Promise<User> {
     return await this.findOne({
       where: {
-        email,
+        username,
       },
     });
   }

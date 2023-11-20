@@ -33,11 +33,11 @@ export class UserService {
   }
 
   async createUser(createUserDto: CreateUserDto) {
-    const { email, phone, fullname, password } = createUserDto;
-    console.log(email);
+    const { username, phone, fullname, password } = createUserDto;
+    console.log(username);
     const checkUser = await this.userRepository.findOne({
       where: {
-        email: createUserDto.email,
+        username: createUserDto.username,
       },
     });
     if (checkUser) {
@@ -50,7 +50,7 @@ export class UserService {
     }
     createUserDto.password = await this.hashPassword(createUserDto.password);
     const user = await this.userRepository.save({
-      email,
+      username,
       phone,
       fullname,
       password: await this.hashPassword(password),
@@ -59,13 +59,13 @@ export class UserService {
   }
 
   /**
-   * verify email and password is correct and return user infomation
-   * @param email
+   * verify username and password is correct and return user infomation
+   * @param username
    * @param password
    * @returns
    */
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userRepository.findByEmail(username);
+    const user = await this.userRepository.findByusername(username);
     if (!user) {
       throw new BaseException(
         USER_ERRORS.USER_NOT_FOUND.code,
@@ -78,7 +78,7 @@ export class UserService {
     const passwordMatched = bcrypt.compareSync(password, user.password);
     if (passwordMatched) {
       return {
-        username: user.email,
+        username: user.username,
         id: user.id,
         fullname: user.fullname,
         role: user,

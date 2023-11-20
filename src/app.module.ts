@@ -15,12 +15,14 @@ import { ConfigModule } from '@nestjs/config';
 import { Logger } from './common/logger/logger';
 import dbConfig from './configs/db/mySql';
 import { BaseException } from './vendors/exceptions/base.exception';
+import { BookModule } from './app/modules/book/book.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     LoggerModule,
     UserModule,
+    BookModule,
     TypeOrmModule.forRoot(dbConfig),
   ],
   controllers: [AppController],

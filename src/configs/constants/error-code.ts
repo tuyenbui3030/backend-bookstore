@@ -19,10 +19,6 @@ export const REGISTER_ERRORS = {
     message: '"password" length must be at least 6 characters long',
   },
 
-  FIELD_NOT_VALID_EMAIL: {
-    message: '"email" must be a valid email',
-  },
-
   FIELD_CONFIRM_PASSWORD_MUST_MATCH: {
     message: 'Confirm password must match',
   },

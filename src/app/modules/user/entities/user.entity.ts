@@ -10,15 +10,15 @@ import {
 } from 'typeorm';
 
 @Entity('users')
-@Unique(['email'])
+@Unique(['username'])
 @Unique(['phone'])
-@Unique('UQ_USER', ['email', 'phone'])
+@Unique('UQ_USER', ['username', 'phone'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { name: 'id' })
   id: number;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
-  email: string;
+  username: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
   password: string;
