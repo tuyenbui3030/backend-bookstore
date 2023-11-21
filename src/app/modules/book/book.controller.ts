@@ -24,19 +24,19 @@ export class BookController extends BaseController {
         super();
     }
 
-
+    @UseGuards(UserGuard)
     @Post('importBook')
     async importBook(@Body() createBookDto: CreateBookDto[]) {
         console.log(createBookDto);
         return this.response(await this.bookService.importBook(createBookDto));
     }
 
-
     @Get('search')
     async searchBook(@Query() search: SearchBook) {
         return this.response(await this.bookService.searchBook(search));
     }
 
+    @UseGuards(UserGuard)
     @Get('detail')
     async detail(@Query() query) {
         return this.response(await this.bookService.detail(query));

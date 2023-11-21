@@ -23,6 +23,9 @@ import {
     @Column({ name: 'category_id', type: 'integer', nullable: false })
     categoryId: number;
   
+    @Column({ name: 'photo', type: 'text', nullable: false })
+    photo: string;
+
     @Column({ type: 'integer', nullable: false, default:0 })
     quantity: number;
   
