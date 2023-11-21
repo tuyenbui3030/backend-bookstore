@@ -18,8 +18,15 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document);
-
-  app.enableCors();
+  const options = {
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204,
+    "credentials":true
+  }
+  app.enableCors(options)
+  // app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const port = parseInt(process.env.APP_PORT, 10) || 4000;
