@@ -5,7 +5,9 @@ import {
   BaseEntity,
   UpdateDateColumn,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Book } from '../../book/entities/book.entity'; // Import Book entity
 
 @Entity('categories')
 export class Category extends BaseEntity {
@@ -14,11 +16,14 @@ export class Category extends BaseEntity {
 
   @Column({
     name: 'category_name',
-    type: 'string',
+    type: 'nvarchar',
     length: 255,
     nullable: false,
   })
   categoryName: string;
+
+  @OneToMany(() => Book, book => book.category)
+  books: Book[]; // Define the relationship with books
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

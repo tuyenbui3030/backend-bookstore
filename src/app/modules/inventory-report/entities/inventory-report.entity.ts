@@ -7,14 +7,17 @@ import {
   CreateDateColumn,
   OneToMany,
   Unique,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Book } from '../../book/entities/book.entity';
 
 @Entity('inventory_reports')
 export class InventoryReport extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { name: 'id' })
   id: number;
 
-  @Column({ name: 'book_id', type: 'integer', length: 255, nullable: false })
+  @Column({ name: 'book_id', type: 'integer', nullable: false })
   bookId: number;
 
   @Column({
@@ -38,7 +41,11 @@ export class InventoryReport extends BaseEntity {
     nullable: false,
     default: 0,
   })
-  finalDebt: Date;
+  finalDebt: number;
+
+  @ManyToOne(() => Book, book => book.inventoryReports)
+  @JoinColumn({ name: 'book_id' })
+  book: Book; // Define the relationship with book
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
