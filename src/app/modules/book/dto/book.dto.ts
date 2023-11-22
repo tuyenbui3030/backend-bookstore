@@ -10,4 +10,5 @@ export class SearchBook {
   name: string;
   author: string;
   categoryId: number;
+  quantity: number;
 }
