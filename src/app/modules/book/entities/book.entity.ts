@@ -30,6 +30,9 @@ export class Book extends BaseEntity {
   @Column({ type: 'integer', nullable: false, default: 0 })
   quantity: number;
 
+  @Column({ type: 'text', nullable: false })
+  photo: string;
+
   @ManyToOne(() => Category, category => category.books)
   @JoinColumn({ name: 'category_id' })
   category: Category; // Define the relationship with category

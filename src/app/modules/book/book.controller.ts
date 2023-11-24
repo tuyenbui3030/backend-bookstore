@@ -11,11 +11,12 @@ import {
     Req,
 } from '@nestjs/common';
 import { BookService } from './book.service';
-import { CreateBookDto, SearchBook } from './dto/book.dto';
+import { CreateBookDto, BookInfo, UpdateBook } from './dto/book.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserGuard } from '../../../vendors/guards/auth.guard';
 import { Request, query } from 'express';
 import { BaseController } from '../../../vendors/base/base.controller';
+import { Book } from './entities/book.entity';
 
 @ApiTags('Book')
 @Controller('book')
@@ -32,7 +33,7 @@ export class BookController extends BaseController {
     }
 
     @Get('search')
-    async searchBook(@Query() search: SearchBook) {
+    async searchBook(@Query() search: BookInfo) {
         return this.response(await this.bookService.searchBook(search));
     }
 
@@ -40,6 +41,22 @@ export class BookController extends BaseController {
     @Get('detail')
     async detail(@Query() query) {
         return this.response(await this.bookService.detail(query));
+    }
+
+    @UseGuards(UserGuard)
+    @Patch(':id')
+    async updateBook(@Param('id') id: string, @Body() updatedBookData: Partial<Book>) {
+        const bookId = parseInt(id, 10);
+        const updatedBook = await this.bookService.updateBook(bookId, updatedBookData);
+        return this.response(updatedBook);
+    }
+
+    @UseGuards(UserGuard)
+    @Delete(':id')
+    async deleteBook(@Param('id') id: string) {
+        const bookId = parseInt(id, 10);
+        const deleteBook = await this.bookService.deleteBook(bookId);
+        return this.response(bookId);
     }
 
 

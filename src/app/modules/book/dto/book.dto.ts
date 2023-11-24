@@ -6,9 +6,13 @@ export class CreateBookDto {
   photo!: string;
 }
 
-export class SearchBook {
+export class BookInfo {
   name: string;
   author: string;
   categoryId: number;
   quantity: number;
+}
+
+export class UpdateBook extends BookInfo {
+  id: number;
 }

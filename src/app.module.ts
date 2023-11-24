@@ -16,6 +16,7 @@ import { Logger } from './common/logger/logger';
 import dbConfig from './configs/db/mySql';
 import { BaseException } from './vendors/exceptions/base.exception';
 import { BookModule } from './app/modules/book/book.module';
+import { CategoryModule } from './app/modules/category/category.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { BookModule } from './app/modules/book/book.module';
     LoggerModule,
     UserModule,
     BookModule,
+    CategoryModule,
     TypeOrmModule.forRoot(dbConfig),
   ],
   controllers: [AppController],

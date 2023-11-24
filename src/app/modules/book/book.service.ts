@@ -1,19 +1,9 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { USER_ERRORS } from '../../../configs/constants/error-code';
-import { AccountType } from '../../../configs/enum/account';
-import { CreateBookDto, SearchBook } from './dto/book.dto';
+import { Injectable } from '@nestjs/common';
+import { BookInfo, CreateBookDto, UpdateBook } from './dto/book.dto';
 import { BookRepository } from './book.repository';
-import * as bcrypt from 'bcrypt';
-import * as moment from 'moment';
-import { SALT_ROUNDS } from '../../../configs/constants/auth';
 import { Book } from './entities/book.entity';
+import { ILike } from 'typeorm';
 import { BaseException } from '../../../vendors/exceptions/base.exception';
-import { generateOTP } from '../../../app/utils/genarate-otp';
-import { OtpType } from '../../../configs/enum/otp';
-import { MailerService } from '@nestjs-modules/mailer';
-import { EmployeeRole } from '../../../configs/enum/employee-role';
-import { ILike, Like, MoreThan } from 'typeorm';
 
 @Injectable()
 export class BookService {
@@ -26,7 +16,7 @@ export class BookService {
     await this.bookRepository.save(createUserDto);
   }
 
-  async searchBook(searchBook: SearchBook): Promise<Book[]> {
+  async searchBook(searchBook: BookInfo): Promise<Book[]> {
     const quantity = searchBook.quantity || Number.MAX_SAFE_INTEGER;
     const books = (await this.bookRepository.find({
       where: [
@@ -45,5 +35,44 @@ export class BookService {
       }
     });
     return book;
+  }
+
+  async updateBook(bookId: number, updatedBookData: Partial<Book>): Promise<Book> {
+    const bookToUpdate = await this.bookRepository.findOne({
+      where: {
+        id: bookId
+      }
+    });
+
+    if (!bookToUpdate) {
+      // Xử lý trường hợp không tìm thấy sách
+      throw new BaseException(
+        'BOOK_NOT_EXISTS',
+        'BOOK_NOT_EXISTS',
+      );
+    }
+
+    // Cập nhật thông tin sách với dữ liệu mới
+    const updatedBook = Object.assign(bookToUpdate, updatedBookData);
+    return await this.bookRepository.save(updatedBook);
+  }
+
+  async deleteBook(bookId: number): Promise<void> {
+    const bookToDelete = await this.bookRepository.findOne({
+      where: {
+        id: bookId
+      }
+    });
+
+    if (!bookToDelete) {
+      // Xử lý trường hợp không tìm thấy sách
+      throw new BaseException(
+        'BOOK_NOT_EXISTS',
+        'BOOK_NOT_EXISTS',
+      );
+    }
+
+    // Cập nhật thông tin sách với dữ liệu mới
+    await this.bookRepository.remove(bookToDelete);
   }
 }
